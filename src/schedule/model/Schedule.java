@@ -8,8 +8,11 @@ public class Schedule {
 	private String eventEndDate;
 	private String eventDeadlineDate;
 	private String senderEmail;
+	private String decideDate;
+	private String note;
 
-	public Schedule(String id, String eventName, String eventContent, String eventStartDate, String eventEndDate, String eventDeadlineDate, String senderEmail) {
+	public Schedule(String id, String eventName, String eventContent, String eventStartDate,
+			String eventEndDate, String eventDeadlineDate, String senderEmail, String decideDate, String note) {
 		this.id = id;
 		this.eventName = eventName;
 		this.eventContent = eventContent;
@@ -17,6 +20,8 @@ public class Schedule {
 		this.eventEndDate = eventEndDate;
 		this.eventDeadlineDate = eventDeadlineDate;
 		this.senderEmail = senderEmail;
+		this.decideDate = decideDate;
+		this.note = note;
 	}
 
 	public String getId() {
@@ -45,6 +50,14 @@ public class Schedule {
 
 	public String getSenderEmail() {
 		return senderEmail;
+	}
+
+	public String getDecideDate() {
+		return decideDate;
+	}
+
+	public String getNote() {
+		return note;
 	}
 
 }
