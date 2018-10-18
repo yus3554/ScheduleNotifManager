@@ -66,7 +66,11 @@ public class Start {
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
 						, targetHM.get("senderEmail"), null, null);
-				new SendMail().send(schedule, firstSendURL.get(i), targetHM.get("targetEmail"), 0);
+				try {
+					new SendMail().send(schedule, firstSendURL.get(i), targetHM.get("targetEmail"), 0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			for(int i = 0 ; i < reSendURL.size(); i++) {
 				targetHM = new TargetTable().getTarget(reSendURL.get(i));
@@ -76,7 +80,11 @@ public class Start {
 					schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 							, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
 							, targetHM.get("senderEmail"), null, null);
-					new SendMail().send(schedule, reSendURL.get(i), targetHM.get("targetEmail"), 1);
+					try {
+						new SendMail().send(schedule, reSendURL.get(i), targetHM.get("targetEmail"), 1);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				} else {
 					// 入力してあった場合、その対象の通知を全て削除
 					new NotifTable().delete(reSendURL.get(i));
@@ -88,7 +96,11 @@ public class Start {
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
 						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"));
-				new SendMail().send(schedule, decideURL.get(i), targetHM.get("targetEmail"), 2);
+				try {
+					new SendMail().send(schedule, decideURL.get(i), targetHM.get("targetEmail"), 2);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				// その対象の通知を全て削除
 				new NotifTable().delete(decideURL.get(i));
 			}
