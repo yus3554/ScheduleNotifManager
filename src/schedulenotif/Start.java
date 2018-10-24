@@ -65,7 +65,7 @@ public class Start {
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
-						, targetHM.get("senderEmail"), null, null);
+						, targetHM.get("senderEmail"), null, null, scheduleHM.get("fileName"));
 				try {
 					new SendMail().send(schedule, firstSendURL.get(i), targetHM.get("targetEmail"), 0);
 				} catch (Exception e) {
@@ -79,7 +79,7 @@ public class Start {
 					scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 					schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 							, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
-							, targetHM.get("senderEmail"), null, null);
+							, targetHM.get("senderEmail"), null, null, scheduleHM.get("fileName"));
 					try {
 						new SendMail().send(schedule, reSendURL.get(i), targetHM.get("targetEmail"), 1);
 					} catch (Exception e) {
@@ -95,7 +95,7 @@ public class Start {
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
-						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"));
+						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"), null);
 				try {
 					new SendMail().send(schedule, decideURL.get(i), targetHM.get("targetEmail"), 2);
 				} catch (Exception e) {
@@ -120,7 +120,7 @@ public class Start {
 
 			// 第二引数が最初のループ、第三引数が2回目以降のループ
 			// テスト用に最初だけ短くしている
-		}, 5, 30, TimeUnit.SECONDS);
+		}, 5, 10, TimeUnit.SECONDS);
 		//////////////////////////////////ここまで////////////////////////////////////
 	}
 
