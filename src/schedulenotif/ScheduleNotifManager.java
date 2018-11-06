@@ -16,9 +16,9 @@ import schedule.model.ScheduleTable;
 import schedule.model.SendMail;
 import schedule.model.TargetTable;
 
-public class Start {
+public class ScheduleNotifManager {
 
-	public Start() {
+	public ScheduleNotifManager() {
 
 	}
 
