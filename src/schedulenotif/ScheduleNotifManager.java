@@ -64,7 +64,7 @@ public class ScheduleNotifManager {
 				targetHM = new TargetTable().getTarget(firstSendURL.get(i));
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
-						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
+						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
 						, targetHM.get("senderEmail"), null, null, scheduleHM.get("fileName"));
 				try {
 					new SendMail().send(schedule, firstSendURL.get(i), targetHM.get("targetEmail"), 0);
@@ -78,7 +78,7 @@ public class ScheduleNotifManager {
 				if(Integer.parseInt(targetHM.get("isInput")) == 0) {
 					scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 					schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
-							, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
+							, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
 							, targetHM.get("senderEmail"), null, null, scheduleHM.get("fileName"));
 					try {
 						new SendMail().send(schedule, reSendURL.get(i), targetHM.get("targetEmail"), 1);
@@ -94,7 +94,7 @@ public class ScheduleNotifManager {
 				targetHM = new TargetTable().getTarget(decideURL.get(i));
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
-						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadlineDate")
+						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
 						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"), null);
 				try {
 					new SendMail().send(schedule, decideURL.get(i), targetHM.get("targetEmail"), 2);

@@ -6,20 +6,20 @@ public class Schedule {
 	private String eventContent;
 	private String eventStartDate;
 	private String eventEndDate;
-	private String eventDeadlineDate;
+	private String eventDeadline;
 	private String senderEmail;
 	private String decideDate;
 	private String note;
 	private String fileName;
 
 	public Schedule(String id, String eventName, String eventContent, String eventStartDate,
-			String eventEndDate, String eventDeadlineDate, String senderEmail, String decideDate, String note, String fileName) {
+			String eventEndDate, String eventDeadline, String senderEmail, String decideDate, String note, String fileName) {
 		this.id = id;
 		this.eventName = eventName;
 		this.eventContent = eventContent;
 		this.eventStartDate = eventStartDate;
 		this.eventEndDate = eventEndDate;
-		this.eventDeadlineDate = eventDeadlineDate;
+		this.eventDeadline = eventDeadline;
 		this.senderEmail = senderEmail;
 		this.decideDate = decideDate;
 		this.note = note;
@@ -46,8 +46,8 @@ public class Schedule {
 		return eventEndDate;
 	}
 
-	public String getEventDeadlineDate() {
-		return eventDeadlineDate;
+	public String getEventDeadline() {
+		return eventDeadline;
 	}
 
 	public String getSenderEmail() {
