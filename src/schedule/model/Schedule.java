@@ -10,10 +10,9 @@ public class Schedule {
 	private String senderEmail;
 	private String decideDate;
 	private String note;
-	private String fileName;
 
 	public Schedule(String id, String eventName, String eventContent, String eventStartDate,
-			String eventEndDate, String eventDeadline, String senderEmail, String decideDate, String note, String fileName) {
+			String eventEndDate, String eventDeadline, String senderEmail, String decideDate, String note) {
 		this.id = id;
 		this.eventName = eventName;
 		this.eventContent = eventContent;
@@ -23,7 +22,6 @@ public class Schedule {
 		this.senderEmail = senderEmail;
 		this.decideDate = decideDate;
 		this.note = note;
-		this.fileName = fileName;
 	}
 
 	public String getId() {
@@ -60,10 +58,6 @@ public class Schedule {
 
 	public String getNote() {
 		return note;
-	}
-
-	public String getFileName() {
-		return fileName;
 	}
 
 }

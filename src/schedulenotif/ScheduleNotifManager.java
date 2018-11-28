@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import schedule.model.NotifTable;
 import schedule.model.Schedule;
@@ -65,7 +66,7 @@ public class ScheduleNotifManager {
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
-						, targetHM.get("senderEmail"), null, null, scheduleHM.get("fileName"));
+						, targetHM.get("senderEmail"), null, null);
 				try {
 					new SendMail().send(schedule, firstSendURL.get(i), targetHM.get("targetEmail"), 0);
 				} catch (Exception e) {
@@ -79,7 +80,7 @@ public class ScheduleNotifManager {
 					scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 					schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 							, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
-							, targetHM.get("senderEmail"), null, null, scheduleHM.get("fileName"));
+							, targetHM.get("senderEmail"), null, null);
 					try {
 						new SendMail().send(schedule, reSendURL.get(i), targetHM.get("targetEmail"), 1);
 					} catch (Exception e) {
@@ -95,7 +96,7 @@ public class ScheduleNotifManager {
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
-						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"), null);
+						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"));
 				try {
 					new SendMail().send(schedule, decideURL.get(i), targetHM.get("targetEmail"), 2);
 				} catch (Exception e) {
