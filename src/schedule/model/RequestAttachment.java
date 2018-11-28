@@ -1,9 +1,6 @@
 package schedule.model;
 
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 
 public class RequestAttachment {
 
