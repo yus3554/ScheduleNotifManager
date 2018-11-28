@@ -1,5 +1,7 @@
 package schedulenotif;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class ScheduleNotifManager {
 		ArrayList<String> decideURL = new ArrayList<>();
 
 		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+
+		System.out.println("----------監視開始----------");
 
 		// 60秒ごとに更新
 		// debug用に最初の実行だけ5秒で
@@ -65,6 +69,8 @@ public class ScheduleNotifManager {
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
 						, targetHM.get("senderEmail"), null, null);
 				try {
+					System.out.println("-------メール送信-------");
+					System.out.println(nowTime);
 					new SendMail().send(schedule, firstSendURL.get(i), targetHM.get("targetEmail"), 0);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -79,6 +85,8 @@ public class ScheduleNotifManager {
 							, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
 							, targetHM.get("senderEmail"), null, null);
 					try {
+						System.out.println("-------メール送信-------");
+						System.out.println(nowTime);
 						new SendMail().send(schedule, reSendURL.get(i), targetHM.get("targetEmail"), 1);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -95,6 +103,8 @@ public class ScheduleNotifManager {
 						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
 						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"));
 				try {
+					System.out.println("-------メール送信-------");
+					System.out.println(nowTime);
 					new SendMail().send(schedule, decideURL.get(i), targetHM.get("targetEmail"), 2);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -108,8 +118,6 @@ public class ScheduleNotifManager {
 			firstSendURL.addAll(decideURL);
 			new NotifTable().delete(firstSendURL, nowTime);
 
-			// デバッグ用
-			System.out.println(nowTime);
 
 			// URLの配列の初期化 (ループさせるため)
 			firstSendURL.clear();
