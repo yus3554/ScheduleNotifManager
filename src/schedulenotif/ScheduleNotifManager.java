@@ -66,7 +66,7 @@ public class ScheduleNotifManager {
 				targetHM = new TargetTable().getTarget(firstSendURL.get(i));
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
-						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
+						,  scheduleHM.get("eventDeadline")
 						, targetHM.get("senderEmail"), null, null);
 				try {
 					System.out.println("-------メール送信-------");
@@ -82,7 +82,7 @@ public class ScheduleNotifManager {
 				if(Integer.parseInt(targetHM.get("isInput")) == 0) {
 					scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 					schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
-							, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
+							, scheduleHM.get("eventDeadline")
 							, targetHM.get("senderEmail"), null, null);
 					try {
 						System.out.println("-------メール送信-------");
@@ -100,7 +100,7 @@ public class ScheduleNotifManager {
 				targetHM = new TargetTable().getTarget(decideURL.get(i));
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
-						, scheduleHM.get("eventStartDate"), scheduleHM.get("eventEndDate"), scheduleHM.get("eventDeadline")
+						, scheduleHM.get("eventDeadline")
 						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"));
 				try {
 					System.out.println("-------メール送信-------");
