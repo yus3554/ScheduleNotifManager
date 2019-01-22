@@ -124,6 +124,10 @@ public class ScheduleNotifManager {
 			reSendURL.clear();
 			decideURL.clear();
 
+			// 全員回答済かどうか調べる
+			// ここで調べるか、回答ページのところで回答済にするときに未回答が0人になったらnotifに投げるとか？
+			// 全員回答済なら日程調整者にその旨を通知する
+
 			// 第二引数が最初のループ、第三引数が2回目以降のループ
 			// テスト用に最初だけ短くしている
 		}, 5, 10, TimeUnit.SECONDS);
