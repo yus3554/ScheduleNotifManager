@@ -27,6 +27,9 @@ public class ScheduleNotifManager {
 		ArrayList<String> firstSendURL = new ArrayList<>();
 		ArrayList<String> reSendURL = new ArrayList<>();
 		ArrayList<String> decideURL = new ArrayList<>();
+		ArrayList<String> allAnswerURL = new ArrayList<>();
+		ArrayList<String> deadlineURL = new ArrayList<>();
+		ArrayList<HashMap<String, String>> decideSchedule = new ArrayList<>();
 
 		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
@@ -53,8 +56,14 @@ public class ScheduleNotifManager {
 				} else if(Integer.parseInt(notifHM.get("type")) == 1) {
 					reSendURL.add(notifHM.get("randomURL"));
 				// 決定
-				} else {
+				} else if(Integer.parseInt(notifHM.get("type")) == 2) {
 					decideURL.add(notifHM.get("randomURL"));
+				// 全員回答したら、日程調整者に通知
+				} else if(Integer.parseInt(notifHM.get("type")) == 3) {
+					allAnswerURL.add(notifHM.get("randomURL"));
+				// 締め切り来た時
+				} else if(Integer.parseInt(notifHM.get("type")) == 4) {
+					deadlineURL.add(notifHM.get("randomURL"));
 				}
 			}
 
@@ -62,12 +71,13 @@ public class ScheduleNotifManager {
 			Schedule schedule;
 			HashMap<String, String> targetHM = new HashMap<>();
 			HashMap<String, String> scheduleHM = new HashMap<>();
+			// 初回
 			for(int i = 0 ; i < firstSendURL.size(); i++) {
 				targetHM = new TargetTable().getTarget(firstSendURL.get(i));
 				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						,  scheduleHM.get("eventDeadline")
-						, targetHM.get("senderEmail"), null, null);
+						, targetHM.get("senderEmail"), null, null, false);
 				try {
 					System.out.println("-------メール送信-------");
 					System.out.println(nowTime);
@@ -76,6 +86,7 @@ public class ScheduleNotifManager {
 					e.printStackTrace();
 				}
 			}
+			// 再送
 			for(int i = 0 ; i < reSendURL.size(); i++) {
 				targetHM = new TargetTable().getTarget(reSendURL.get(i));
 				// 再送する前に未入力か確認
@@ -83,7 +94,7 @@ public class ScheduleNotifManager {
 					scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
 					schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 							, scheduleHM.get("eventDeadline")
-							, targetHM.get("senderEmail"), null, null);
+							, targetHM.get("senderEmail"), null, null, false);
 					try {
 						System.out.println("-------メール送信-------");
 						System.out.println(nowTime);
@@ -96,12 +107,17 @@ public class ScheduleNotifManager {
 					new NotifTable().delete(reSendURL.get(i));
 				}
 			}
+			// 日時決定
 			for(int i = 0 ; i < decideURL.size(); i++) {
 				targetHM = new TargetTable().getTarget(decideURL.get(i));
-				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
+				String id = targetHM.get("id");
+				String senderEmail = targetHM.get("senderEmail");
+				scheduleHM = new ScheduleTable().getSchedule(id, senderEmail);
 				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
 						, scheduleHM.get("eventDeadline")
-						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note"));
+						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note")
+						, (scheduleHM.get("isDecideFirst")).equals("0"));
+				decideSchedule.add(targetHM);
 				try {
 					System.out.println("-------メール送信-------");
 					System.out.println(nowTime);
@@ -112,10 +128,51 @@ public class ScheduleNotifManager {
 				// その対象の通知を全て削除
 				new NotifTable().delete(decideURL.get(i));
 			}
+			// 全員回答
+			for(int i = 0 ; i < allAnswerURL.size(); i++) {
+				targetHM = new TargetTable().getTarget(allAnswerURL.get(i));
+				scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
+				schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
+						, scheduleHM.get("eventDeadline")
+						, targetHM.get("senderEmail"), scheduleHM.get("decideDate"), scheduleHM.get("note")
+						, false);
+				try {
+					System.out.println("-------メール送信-------");
+					System.out.println(nowTime);
+					new SendMail().send(schedule, allAnswerURL.get(i), targetHM.get("targetEmail"), 3);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				// その対象の通知を全て削除
+				new NotifTable().delete(allAnswerURL.get(i));
+			}
+			// 再送
+			for(int i = 0 ; i < deadlineURL.size(); i++) {
+				targetHM = new TargetTable().getTarget(deadlineURL.get(i));
+				// 再送する前に未入力か確認
+				if(Integer.parseInt(targetHM.get("isInput")) == 0) {
+					scheduleHM = new ScheduleTable().getSchedule(targetHM.get("id"), targetHM.get("senderEmail"));
+					schedule = new Schedule(scheduleHM.get("id"), scheduleHM.get("eventName"), scheduleHM.get("eventContent")
+							, scheduleHM.get("eventDeadline")
+							, targetHM.get("senderEmail"), null, null, false);
+					try {
+						System.out.println("-------メール送信-------");
+						System.out.println(nowTime);
+						new SendMail().send(schedule, deadlineURL.get(i), targetHM.get("targetEmail"), 4);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					// 入力してあった場合、その対象の通知を全て削除
+					new NotifTable().delete(deadlineURL.get(i));
+				}
+			}
 
 			// 結合し、実行したもの全て削除
 			firstSendURL.addAll(reSendURL);
 			firstSendURL.addAll(decideURL);
+			firstSendURL.addAll(allAnswerURL);
+			firstSendURL.addAll(deadlineURL);
 			new NotifTable().delete(firstSendURL, nowTime);
 
 
@@ -123,10 +180,15 @@ public class ScheduleNotifManager {
 			firstSendURL.clear();
 			reSendURL.clear();
 			decideURL.clear();
+			allAnswerURL.clear();
+			deadlineURL.clear();
 
-			// 全員回答済かどうか調べる
-			// ここで調べるか、回答ページのところで回答済にするときに未回答が0人になったらnotifに投げるとか？
-			// 全員回答済なら日程調整者にその旨を通知する
+			// 初回かどうかのisDecideFirstを変更
+			for(int i = 0; i < decideSchedule.size(); i++) {
+				new ScheduleTable().updateDecideDate((decideSchedule.get(i)).get("id"), (decideSchedule.get(i)).get("senderEmail"));
+			}
+			decideSchedule.clear();
+
 
 			// 第二引数が最初のループ、第三引数が2回目以降のループ
 			// テスト用に最初だけ短くしている

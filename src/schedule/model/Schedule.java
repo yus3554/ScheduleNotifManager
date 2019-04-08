@@ -8,9 +8,10 @@ public class Schedule {
 	private String senderEmail;
 	private String decideDate;
 	private String note;
+	private boolean isDecideFirst;
 
 	public Schedule(String id, String eventName, String eventContent,
-		 String eventDeadline, String senderEmail, String decideDate, String note) {
+		 String eventDeadline, String senderEmail, String decideDate, String note, boolean isDecideFirst) {
 		this.id = id;
 		this.eventName = eventName;
 		this.eventContent = eventContent;
@@ -18,6 +19,7 @@ public class Schedule {
 		this.senderEmail = senderEmail;
 		this.decideDate = decideDate;
 		this.note = note;
+		this.isDecideFirst = isDecideFirst;
 	}
 
 	public String getId() {
@@ -48,4 +50,7 @@ public class Schedule {
 		return note;
 	}
 
+	public boolean getisDecideFirst() {
+		return isDecideFirst;
+	}
 }
